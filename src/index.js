@@ -29,7 +29,10 @@ const config = {
 //This context during preload is Scene. Contains functions and properties we can use.
 function preload() {
   //this.load.image(What key we want to refer to the file as, path to file)
+  //Sky
   this.load.image('sky', 'assets/sky.png');
+  //Bird
+  this.load.image('bird', 'assets/bird.png');
 }
 
 //Now we add the image to render
@@ -38,6 +41,11 @@ function create() {
 
   //KEEP IN MIND THE CENTER OF THE IMAGE IS INSERTED WHERE THE COORDINATES ARE SPECIFIED UNLESS .setOrigin IS CALLED.
   this.add.image(0, 0, 'sky').setOrigin(0, 0);
+
+  const bird = this.physics.add
+    .sprite(config.width / 10, config.height / 2, 'bird')
+    .setOrigin(0);
+  bird.body.gravity.y = 200;
 }
 
 new Phaser.Game(config);
