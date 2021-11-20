@@ -36,8 +36,8 @@ function preload() {
 function create() {
   //this.add.image(x coordinate, y coordinate, what key we are referring to the file as)
 
-  //KEEP IN MIND THE CENTER OF THE IMAGE IS INSERTED WHERE THE COORDINATES ARE SPECIFIED
-  this.add.image(config.width / 2, config.height / 2, 'sky');
+  //KEEP IN MIND THE CENTER OF THE IMAGE IS INSERTED WHERE THE COORDINATES ARE SPECIFIED UNLESS .setOrigin IS CALLED.
+  this.add.image(0, 0, 'sky').setOrigin(0, 0);
 }
 
 new Phaser.Game(config);
