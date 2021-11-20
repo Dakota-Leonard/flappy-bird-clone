@@ -61,7 +61,11 @@ function create() {
 
 //Updates 60 times per second (60fps)
 //Two arguments provided. Time and delta. Time is current time since render started and delta is time since last time update ran.
-function update(time, delta) {}
+function update(time, delta) {
+  if (bird.y < 0 || bird.y > config.height + bird.height) {
+    console.log('Dead');
+  }
+}
 
 function flap() {
   bird.body.velocity.y = -250;
