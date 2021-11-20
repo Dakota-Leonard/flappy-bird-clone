@@ -1,28 +1,17 @@
-
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
 const config = {
+  //WebGL by default, but automatically selects the correct library to render with
   type: Phaser.AUTO,
+
+  //Dimensions of game area
   width: 800,
   height: 600,
+
+  //Physics to use for gravity. Arcade is a good default.
   physics: {
     default: 'arcade',
-    arcade: {
-      gravity: { y: 200 }
-    }
   },
-  scene: {
-    preload: preload,
-    create: create
-  }
 };
 
 new Phaser.Game(config);
-
-function preload () {
-  this.load.image('sky', 'assets/sky.png');
-}
-
-function create () {
-  this.add.image(400, 300, 'sky');
-}
