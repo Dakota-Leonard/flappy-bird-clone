@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import PlayScene from './scenes/PlayScene';
 
 const config = {
   //WebGL by default, but automatically selects the correct library to render with
@@ -15,18 +16,7 @@ const config = {
   },
 
   //What is seen on the screen.
-  scene: {
-    //Functions called in this order: preload, create, update
-
-    //In preload we load assets such as images, music, animations, etc
-    preload,
-
-    //Initializes application
-    create,
-
-    //Called every frame app is running
-    update,
-  },
+  scene: [PlayScene],
 };
 
 //This context during preload is Scene. Contains functions and properties we can use.
