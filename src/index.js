@@ -43,6 +43,9 @@ function preload() {
 let bird = null;
 let upperPipe = null;
 let lowerPipe = null;
+const pipeVerticalDistanceRange = [150, 250];
+let pipeVerticalDistance = Phaser.Math.Between(...pipeVerticalDistanceRange);
+
 const initialBirdPosition = { x: config.width / 10, y: config.height / 2 };
 
 //Now we add the image to render
@@ -63,7 +66,7 @@ function create() {
     .setOrigin(0, 1);
 
   lowerPipe = this.add
-    .sprite(config.width / 2, upperPipe.y + 100, 'pipe')
+    .sprite(config.width / 2, upperPipe.y + pipeVerticalDistance, 'pipe')
     .setOrigin(0, 0);
 
   //Setting input events
