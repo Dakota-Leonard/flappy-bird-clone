@@ -43,7 +43,7 @@ function preload() {
 let bird = null;
 let pipes = null;
 const pipeVerticalDistanceRange = [150, 250];
-const pipeHorizontalDistanceRange = [450, 500];
+const pipeHorizontalDistanceRange = [500, 550];
 
 const PIPES_TO_RENDER = 4;
 
