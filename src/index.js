@@ -44,9 +44,9 @@ let bird = null;
 let upperPipe = null;
 let lowerPipe = null;
 const pipeVerticalDistanceRange = [150, 250];
-let pipeVerticalDistance = Phaser.Math.Between(...pipeVerticalDistanceRange);
-const pipeYPositionRange = [20, config.height - 20 - pipeVerticalDistance];
-let pipeYPosition = Phaser.Math.Between(...pipeYPositionRange);
+let pipeHorizontalDistance = 0;
+
+const PIPES_TO_RENDER = 4;
 
 const initialBirdPosition = { x: config.width / 10, y: config.height / 2 };
 
@@ -63,13 +63,28 @@ function create() {
 
   bird.body.gravity.y = 400;
 
-  upperPipe = this.add
-    .sprite(config.width / 2, pipeYPosition, 'pipe')
-    .setOrigin(0, 1);
+  for (let i = 0; i < PIPES_TO_RENDER; i++) {
+    pipeHorizontalDistance += 400;
+    const pipeVerticalDistance = Phaser.Math.Between(
+      ...pipeVerticalDistanceRange
+    );
+    const pipeYPosition = Phaser.Math.Between(
+      20,
+      config.height - 20 - pipeVerticalDistance
+    );
 
-  lowerPipe = this.add
-    .sprite(config.width / 2, upperPipe.y + pipeVerticalDistance, 'pipe')
-    .setOrigin(0, 0);
+    upperPipe = this.add
+      .sprite(pipeHorizontalDistance, pipeYPosition, 'pipe')
+      .setOrigin(0, 1);
+
+    lowerPipe = this.add
+      .sprite(
+        pipeHorizontalDistance,
+        upperPipe.y + pipeVerticalDistance,
+        'pipe'
+      )
+      .setOrigin(0, 0);
+  }
 
   //Setting input events
   this.input.on('pointerdown', flap);
