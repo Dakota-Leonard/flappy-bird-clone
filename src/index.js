@@ -64,26 +64,11 @@ function create() {
   bird.body.gravity.y = 400;
 
   for (let i = 0; i < PIPES_TO_RENDER; i++) {
-    pipeHorizontalDistance += 400;
-    const pipeVerticalDistance = Phaser.Math.Between(
-      ...pipeVerticalDistanceRange
-    );
-    const pipeYPosition = Phaser.Math.Between(
-      20,
-      config.height - 20 - pipeVerticalDistance
-    );
+    const upperPipe = this.physics.add.sprite(0, 0, 'pipe').setOrigin(0, 1);
 
-    upperPipe = this.add
-      .sprite(pipeHorizontalDistance, pipeYPosition, 'pipe')
-      .setOrigin(0, 1);
+    const lowerPipe = this.physics.add.sprite(0, 0, 'pipe').setOrigin(0, 0);
 
-    lowerPipe = this.add
-      .sprite(
-        pipeHorizontalDistance,
-        upperPipe.y + pipeVerticalDistance,
-        'pipe'
-      )
-      .setOrigin(0, 0);
+    placePipe(upperPipe, lowerPipe);
   }
 
   //Setting input events
@@ -93,11 +78,31 @@ function create() {
 
 //Updates 60 times per second (60fps)
 //Two arguments provided. Time and delta. Time is current time since render started and delta is time since last time update ran.
-function update(time, delta) {
+function update() {
   if (bird.y < 0 || bird.y > config.height + bird.height) {
     restartBirdPosition();
     bird.body.velocity.y = 0;
   }
+}
+
+function placePipe(uPipe, lPipe) {
+  pipeHorizontalDistance += 400;
+  const pipeVerticalDistance = Phaser.Math.Between(
+    ...pipeVerticalDistanceRange
+  );
+  const pipeYPosition = Phaser.Math.Between(
+    20,
+    config.height - 20 - pipeVerticalDistance
+  );
+
+  uPipe.x = pipeHorizontalDistance;
+  uPipe.y = pipeYPosition;
+
+  lPipe.x = uPipe.x;
+  lPipe.y = uPipe.y + pipeVerticalDistance;
+
+  uPipe.body.velocity.x = -200;
+  lPipe.body.velocity.x = -200;
 }
 
 function restartBirdPosition() {
