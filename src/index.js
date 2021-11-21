@@ -12,9 +12,6 @@ const config = {
   physics: {
     //Arcade physicis plugin, manages physicis simulations (gravity/velocity/etc)
     default: 'arcade',
-    arcade: {
-      gravity: { y: 400 },
-    },
   },
 
   //What is seen on the screen.
@@ -39,9 +36,14 @@ function preload() {
   this.load.image('sky', 'assets/sky.png');
   //Bird
   this.load.image('bird', 'assets/bird.png');
+  //Pipe
+  this.load.image('pipe', 'assets/pipe.png');
 }
 
 let bird = null;
+let upperPipe = null;
+let lowerPipe = null;
+const initialBirdPosition = { x: config.width / 10, y: config.height / 2 };
 
 //Now we add the image to render
 function create() {
@@ -51,8 +53,18 @@ function create() {
   this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
   bird = this.physics.add
-    .sprite(config.width / 10, config.height / 2, 'bird')
+    .sprite(initialBirdPosition.x, initialBirdPosition.y, 'bird')
     .setOrigin(0);
+
+  bird.body.gravity.y = 400;
+
+  upperPipe = this.add
+    .sprite(config.width / 2, config.height / 2, 'pipe')
+    .setOrigin(0, 1);
+
+  lowerPipe = this.add
+    .sprite(config.width / 2, upperPipe.y + 100, 'pipe')
+    .setOrigin(0, 0);
 
   //Setting input events
   this.input.on('pointerdown', flap);
@@ -63,8 +75,14 @@ function create() {
 //Two arguments provided. Time and delta. Time is current time since render started and delta is time since last time update ran.
 function update(time, delta) {
   if (bird.y < 0 || bird.y > config.height + bird.height) {
-    console.log('Dead');
+    restartBirdPosition();
+    bird.body.velocity.y = 0;
   }
+}
+
+function restartBirdPosition() {
+  bird.x = initialBirdPosition.x;
+  bird.y = initialBirdPosition.y;
 }
 
 function flap() {
