@@ -41,10 +41,9 @@ function preload() {
 }
 
 let bird = null;
-let upperPipe = null;
-let lowerPipe = null;
+let pipes = null;
 const pipeVerticalDistanceRange = [150, 250];
-let pipeHorizontalDistance = 0;
+const pipeHorizontalDistanceRange = [450, 500];
 
 const PIPES_TO_RENDER = 4;
 
@@ -63,13 +62,16 @@ function create() {
 
   bird.body.gravity.y = 400;
 
-  for (let i = 0; i < PIPES_TO_RENDER; i++) {
-    const upperPipe = this.physics.add.sprite(0, 0, 'pipe').setOrigin(0, 1);
+  pipes = this.physics.add.group();
 
-    const lowerPipe = this.physics.add.sprite(0, 0, 'pipe').setOrigin(0, 0);
+  for (let i = 0; i < PIPES_TO_RENDER; i++) {
+    const upperPipe = pipes.create(0, 0, 'pipe').setOrigin(0, 1);
+    const lowerPipe = pipes.create(0, 0, 'pipe').setOrigin(0, 0);
 
     placePipe(upperPipe, lowerPipe);
   }
+
+  pipes.setVelocityX(-200);
 
   //Setting input events
   this.input.on('pointerdown', flap);
@@ -86,7 +88,7 @@ function update() {
 }
 
 function placePipe(uPipe, lPipe) {
-  pipeHorizontalDistance += 400;
+  const rightMostXPosition = getRightMostPipe();
   const pipeVerticalDistance = Phaser.Math.Between(
     ...pipeVerticalDistanceRange
   );
@@ -94,15 +96,23 @@ function placePipe(uPipe, lPipe) {
     20,
     config.height - 20 - pipeVerticalDistance
   );
+  const pipeHorizontalDistance = Phaser.Math.Between(
+    ...pipeHorizontalDistanceRange
+  );
 
-  uPipe.x = pipeHorizontalDistance;
+  uPipe.x = rightMostXPosition + pipeHorizontalDistance;
   uPipe.y = pipeYPosition;
 
   lPipe.x = uPipe.x;
   lPipe.y = uPipe.y + pipeVerticalDistance;
+}
 
-  uPipe.body.velocity.x = -200;
-  lPipe.body.velocity.x = -200;
+function getRightMostPipe() {
+  let rightMostX = 0;
+  pipes.getChildren().forEach(pipe => {
+    rightMostX = Math.max(pipe.x, rightMostX);
+  });
+  return rightMostX;
 }
 
 function restartBirdPosition() {
