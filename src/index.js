@@ -45,6 +45,8 @@ let upperPipe = null;
 let lowerPipe = null;
 const pipeVerticalDistanceRange = [150, 250];
 let pipeVerticalDistance = Phaser.Math.Between(...pipeVerticalDistanceRange);
+const pipeYPositionRange = [20, config.height - 20 - pipeVerticalDistance];
+let pipeYPosition = Phaser.Math.Between(...pipeYPositionRange);
 
 const initialBirdPosition = { x: config.width / 10, y: config.height / 2 };
 
@@ -62,7 +64,7 @@ function create() {
   bird.body.gravity.y = 400;
 
   upperPipe = this.add
-    .sprite(config.width / 2, config.height / 2, 'pipe')
+    .sprite(config.width / 2, pipeYPosition, 'pipe')
     .setOrigin(0, 1);
 
   lowerPipe = this.add
