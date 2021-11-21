@@ -1,13 +1,20 @@
 import Phaser from 'phaser';
 import PlayScene from './scenes/PlayScene';
 
+const WIDTH = 800;
+const HEIGHT = 600;
+const BIRD_POSITION = { x: WIDTH / 10, y: HEIGHT / 2 };
+
+const SHARED_CONFIG = {
+  width: WIDTH,
+  height: HEIGHT,
+  startPosition: BIRD_POSITION,
+};
+
 const config = {
   //WebGL by default, but automatically selects the correct library to render with
   type: Phaser.AUTO,
-
-  //Dimensions of game area
-  width: 800,
-  height: 600,
+  ...SHARED_CONFIG,
 
   //Physics to use for gravity. Arcade is a good default.
   physics: {
@@ -16,7 +23,7 @@ const config = {
   },
 
   //What is seen on the screen.
-  scene: [PlayScene],
+  scene: [new PlayScene(SHARED_CONFIG)],
 };
 
 //This context during preload is Scene. Contains functions and properties we can use.
